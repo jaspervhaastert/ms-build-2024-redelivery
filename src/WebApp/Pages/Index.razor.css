@@ -1,0 +1,19 @@
+﻿#container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 8px;
+}
+
+#chat-container {
+    flex-grow: 1;
+    overflow-y: scroll;
+}
+
+#chat-container h4 {
+    margin-bottom: 4px;
+}
+
+#chat-container p {
+    margin-top: 4px;
+}

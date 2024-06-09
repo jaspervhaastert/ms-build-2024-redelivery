@@ -1,3 +1,51 @@
 ﻿@page "/"
+@using WebApp.Services
+@inject IChatService ChatService
 
-<h1>Hello, world!</h1>
+<div id="container">
+    <div id="chat-container">
+        @foreach (var message in Messages)
+        {
+        <div class="chat">
+            <h4>@(message.Item1 == "user" ? "User" : "AI")</h4>
+            <p>@message.Item2</p>
+        </div>
+        }
+    </div>
+
+    <div id="form-container">
+        <p id="error" @bind="Error"></p>
+
+        <form @onsubmit="SendMessage">
+            <input type="text" @bind="Message" />
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
+@code
+{
+    private List<(string, string)> Messages { get; } = [];
+    private string? Error { get; set; }
+    private string? Message { get; set; }
+
+    private async Task SendMessage()
+    {
+        if (string.IsNullOrWhiteSpace(Message)) return;
+
+        Error = null;
+
+        var message = Message!;
+        Messages.Add(("user", message));
+        Message = null;
+
+        var response = await ChatService.SendMessageAsync(Messages);
+        if (response.Error is not null)
+        {
+            Error = response.Error;
+            return;
+        }
+
+        Messages.Add(("system", response.Response!));
+    }
+}
