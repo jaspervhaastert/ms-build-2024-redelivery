@@ -1,8 +1,9 @@
 ﻿@page "/"
 @using WebApp.Services
 @inject IChatService ChatService
+@inject IAppearanceService AppearanceService
 
-<div id="container">
+<div id="container" class="@AppearanceService.Class">
     <div id="chat-container">
         @foreach (var message in Messages)
         {

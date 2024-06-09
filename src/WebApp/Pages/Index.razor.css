@@ -5,6 +5,11 @@
     padding: 8px;
 }
 
+#container.dark {
+    background-color: #333;
+    color: #fff;
+}
+
 #chat-container {
     flex-grow: 1;
     overflow-y: scroll;

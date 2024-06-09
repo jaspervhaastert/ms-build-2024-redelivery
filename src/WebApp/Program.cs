@@ -1,5 +1,6 @@
 using Microsoft.SemanticKernel;
 using WebApp.Configuration;
+using WebApp.Plugins;
 using WebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,14 +9,15 @@ var azureOpenAiConfiguration = builder.Configuration
     .GetSection(AzureOpenAiConfiguration.SectionKey)
     .Get<AzureOpenAiConfiguration>()!;
 
-builder.Services
-    .AddKernel()
-    .AddAzureOpenAIChatCompletion(
-        azureOpenAiConfiguration.DeploymentName,
-        azureOpenAiConfiguration.Endpoint,
-        azureOpenAiConfiguration.ApiKey);
+var kernelBuilder = builder.Services.AddKernel();
+kernelBuilder.AddAzureOpenAIChatCompletion(
+    azureOpenAiConfiguration.DeploymentName,
+    azureOpenAiConfiguration.Endpoint,
+    azureOpenAiConfiguration.ApiKey);
+kernelBuilder.Plugins.AddFromType<AppearancePlugin>();
 
 builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddSingleton<IAppearanceService, AppearanceService>();
 
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
