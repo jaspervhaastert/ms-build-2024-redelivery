@@ -1,15 +1,18 @@
 ﻿@page "/"
+@using Microsoft.SemanticKernel.ChatCompletion
 @using WebApp.Services
 @inject IChatService ChatService
 @inject IAppearanceService AppearanceService
 
 <div id="container" class="@AppearanceService.Class">
     <div id="chat-container">
-        @foreach (var message in Messages)
+        @foreach (var message in ChatService.ChatHistory
+                      .Where(c => (c.Role == AuthorRole.Assistant || c.Role == AuthorRole.User)
+                                  && !string.IsNullOrEmpty(c.ToString())))
         {
         <div class="chat">
-            <h4>@(message.Item1 == "user" ? "User" : "AI")</h4>
-            <p>@message.Item2</p>
+            <h4>@message.Role</h4>
+            <p>@message</p>
         </div>
         }
     </div>
@@ -26,7 +29,6 @@
 
 @code
 {
-    private List<(string, string)> Messages { get; } = [];
     private string? Error { get; set; }
     private string? Message { get; set; }
 
@@ -37,16 +39,15 @@
         Error = null;
 
         var message = Message!;
-        Messages.Add(("user", message));
         Message = null;
 
-        var response = await ChatService.SendMessageAsync(Messages);
+        var response = await ChatService.SendMessageAsync(message);
         if (response.Error is not null)
         {
             Error = response.Error;
             return;
         }
 
-        Messages.Add(("system", response.Response!));
+        StateHasChanged();
     }
 }
