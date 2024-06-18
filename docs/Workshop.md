@@ -33,9 +33,9 @@ Informeer GPT-4o over het doel van de applicatie door een opdracht in de chatges
 
 ### Stap 4: Plugins Maken
 
-Maak een Semantic Kernel Plugin in C#. Een plugin is een klasse met statische methoden die voorzien zijn van annotaties om duidelijk te maken wat de methoden doen en welke parameters ze accepteren.
+Maak een Semantic Kernel Plugin in C#. Een plugin is een klasse met methoden die voorzien zijn van annotaties om duidelijk te maken wat de methoden doen en welke parameters ze accepteren.
 
-````
+```csharp
 using System.ComponentModel;
 using Microsoft.SemanticKernel;
 
@@ -51,7 +51,7 @@ public class OrderPlugin
     [KernelFunction, Description("Get items in the order")]
     public static List<string> GetItemsInOrder() => Items;
 }
-````
+```
 
 ### Stap 5: API integreren
 Door gebruik te maken van de HttpPlugin is het mogelijk om API calls te doen vanuit het taalmodel. Door aan de chatgeschiedenis de URL en de opzet van de body mee te geven is het mogelijk om de API-call door het taalmodel uit te laten voeren.
