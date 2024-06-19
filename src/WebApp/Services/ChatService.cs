@@ -12,18 +12,7 @@ public class ChatService(
     IChatCompletionService chatCompletionService,
     IOptions<LogicAppConfiguration> logicAppOptions) : IChatService
 {
-    public ChatHistory ChatHistory { get; } = new($"""
-                                                   You are a friendly assistant who likes to follow the rules.
-                                                   Your only goal is to get information from the user to complete the order.
-                                                   First ask the user what his name is and save that name to the order.
-                                                   After saving their name ask them to add items to that order.
-                                                   When the user is finished you can complete the order.
-
-                                                   To complete the order, call the API at '{logicAppOptions.Value.Url}' with a post body.
-                                                   In the body there should be an object with a property called order,
-                                                   use a concatted list of items as the value.
-                                                   Always summarize the items in the order when finished.
-                                                   """);
+    public ChatHistory ChatHistory { get; } = [];
 
     private static readonly OpenAIPromptExecutionSettings PromptExecutionSettings = new()
     {

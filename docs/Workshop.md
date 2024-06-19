@@ -21,7 +21,7 @@ Op de main-branch staat een project klaar waar je zo mee aan de slag kunt gaan. 
 
 ### Stap 2: Chatgeschiedenis Opbouwen
 
-Voor een natuurlijk gesprek tussen de gebruiker en het taalmodel is het essentieel om een geschiedenis op te bouwen van de gehele chat. Deze geschiedenis wordt doorgegeven aan het taalmodel om context en continuïteit in het gesprek te waarborgen. In het project is alvast een chathistory opgezet.
+Voor een natuurlijk gesprek tussen de gebruiker en het taalmodel is het essentieel om een geschiedenis op te bouwen van de gehele chat. Deze geschiedenis wordt doorgegeven aan het taalmodel om context en continuïteit in het gesprek te waarborgen. In het project is alvast een chathistory opgezet in de ChatService.
 
 ### Stap 3: Doel Systeem Definiëren
 
@@ -32,26 +32,7 @@ Informeer GPT-4o over het doel van de applicatie door een opdracht in de chatges
 ````
 
 ### Stap 4: Plugins Maken
-
-Maak een Semantic Kernel Plugin in C#. Een plugin is een klasse met methoden die voorzien zijn van annotaties om duidelijk te maken wat de methoden doen en welke parameters ze accepteren.
-
-```csharp
-using System.ComponentModel;
-using Microsoft.SemanticKernel;
-
-namespace WebApp.Plugins;
-
-public class OrderPlugin
-{
-    private static readonly List<string> Items = ["Pasta"];
-
-    [KernelFunction, Description("Add an item to an order")]
-    public static void AddItemToOrder([Description("Name of the item to add")] string itemName) => Items.Add(itemName);
-
-    [KernelFunction, Description("Get items in the order")]
-    public static List<string> GetItemsInOrder() => Items;
-}
-```
+Maak een Semantic Kernel Plugin in C#. Een plugin is een klasse met methoden die voorzien zijn van annotaties om duidelijk te maken wat de methoden doen en welke parameters ze accepteren. Met een plugin is het mogelijk om C#-code te laten uitvoeren door het taalmodel. Bijvoorbeeld het bijhouden van items in een order. Als voorbeeld kan je kijken naar de AppearancePlugin, let erop dat de plugin ook in de Program.cs geregistreerd moet staan.
 
 ### Stap 5: API integreren
 Door gebruik te maken van de HttpPlugin is het mogelijk om API calls te doen vanuit het taalmodel. Door aan de chatgeschiedenis de URL en de opzet van de body mee te geven is het mogelijk om de API-call door het taalmodel uit te laten voeren.

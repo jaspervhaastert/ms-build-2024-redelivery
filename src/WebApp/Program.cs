@@ -19,7 +19,6 @@ kernelBuilder.AddAzureOpenAIChatCompletion(
     azureOpenAiConfiguration.Endpoint,
     azureOpenAiConfiguration.ApiKey);
 kernelBuilder.Plugins.AddFromType<AppearancePlugin>();
-kernelBuilder.Plugins.AddFromType<OrderPlugin>();
 kernelBuilder.Plugins.AddFromType<HttpPlugin>();
 
 builder.Services.AddScoped<IChatService, ChatService>();

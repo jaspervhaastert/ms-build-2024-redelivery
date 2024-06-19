@@ -7,5 +7,5 @@ namespace WebApp.Plugins;
 public class AppearancePlugin(IAppearanceService appearanceService)
 {
     [KernelFunction, Description("Enables or disables dark mode.")]
-    public void SetDarkMode(bool enabled) => appearanceService.DarkModeEnabled = enabled;
+    public void SetDarkMode([Description("Whether dark mode should be enabled")] bool enabled) => appearanceService.DarkModeEnabled = enabled;
 }
