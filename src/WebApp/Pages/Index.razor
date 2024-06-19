@@ -1,0 +1,53 @@
+﻿@page "/"
+@using Microsoft.SemanticKernel.ChatCompletion
+@using WebApp.Services
+@inject IChatService ChatService
+@inject IAppearanceService AppearanceService
+
+<div id="container" class="@AppearanceService.Class">
+    <div id="chat-container">
+        @foreach (var message in ChatService.ChatHistory
+                      .Where(c => (c.Role == AuthorRole.Assistant || c.Role == AuthorRole.User)
+                                  && !string.IsNullOrEmpty(c.ToString())))
+        {
+        <div class="chat">
+            <h4>@message.Role</h4>
+            <p>@message</p>
+        </div>
+        }
+    </div>
+
+    <div id="form-container">
+        <p id="error" @bind="Error"></p>
+
+        <form @onsubmit="SendMessage">
+            <input type="text" @bind="Message" />
+            <button type="submit">Send</button>
+        </form>
+    </div>
+</div>
+
+@code
+{
+    private string? Error { get; set; }
+    private string? Message { get; set; }
+
+    private async Task SendMessage()
+    {
+        if (string.IsNullOrWhiteSpace(Message)) return;
+
+        Error = null;
+
+        var message = Message!;
+        Message = null;
+
+        var response = await ChatService.SendMessageAsync(message);
+        if (response.Error is not null)
+        {
+            Error = response.Error;
+            return;
+        }
+
+        StateHasChanged();
+    }
+}
